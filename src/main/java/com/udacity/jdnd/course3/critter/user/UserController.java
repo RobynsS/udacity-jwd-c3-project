@@ -1,10 +1,13 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.pet.Pet;
+import com.udacity.jdnd.course3.critter.pet.PetService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -22,6 +25,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PetService petService;
 
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
@@ -67,13 +73,30 @@ public class UserController {
 
     private Customer convertCustomerDTOToCustomer(CustomerDTO customerDTO){
         Customer customer = new Customer();
+
+        // Convert list of pets
+        List<Long> petIds = customerDTO.getPetIds();
+        List<Pet> pets = new ArrayList<>();
+        if (petIds != null){
+            for (Long petId: petIds){
+                petService.getPet(petId).ifPresent(pets::add);
+            }
+        }
+
         BeanUtils.copyProperties(customerDTO, customer);
+        customer.setPets(pets);
+
         return customer;
     }
 
     private CustomerDTO convertCustomerToCustomerDTO(Customer customer){
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
+        if(customer.getPets() != null){
+            customerDTO.setPetIds(customer.getPets().stream()
+                    .map(Pet::getId)
+                    .collect(Collectors.toList()));
+        }
         return customerDTO;
     }
 

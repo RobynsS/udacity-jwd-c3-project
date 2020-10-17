@@ -1,17 +1,17 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.pet.Pet;
 import org.hibernate.annotations.Nationalized;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
 public class Customer {
     @Id
     @GeneratedValue
+    @Column(name="customerId")
     private Long id;
 
     @Nationalized
@@ -19,9 +19,8 @@ public class Customer {
     private String phoneNumber;
     private String notes;
 
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
-//    private List<Pet> pets;
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Pet> pets;
 
     public Long getId() {
         return id;
@@ -53,5 +52,17 @@ public class Customer {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public List<Pet> getPets() {
+        return pets;
+    }
+
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
+    }
+
+    public void addPet(Pet pet){
+        this.pets.add(pet);
     }
 }

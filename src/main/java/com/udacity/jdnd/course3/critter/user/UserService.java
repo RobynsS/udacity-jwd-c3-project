@@ -8,19 +8,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserService {
     @Autowired
     CustomerRepository customerRepository;
     @Autowired
     EmployeeRepository employeeRepository;
 
-    @Transactional
     public Customer saveCustomer(Customer customer){
         return customerRepository.save(customer);
     }
 
     public List<Customer> getAllCustomers(){
         return customerRepository.findAll();
+    }
+
+    public Optional<Customer> getCustomer(Long id){
+        return  customerRepository.findById(id);
     }
 
     public Employee saveEmployee(Employee employee){
