@@ -25,4 +25,8 @@ public class PetService {
     public List<Pet> getPetsByOwner (Customer customer){
         return petRepository.getPetsByCustomer(customer);
     }
+
+    public List<Pet> getAllPets(){
+        return petRepository.findAll();
+    }
 }
