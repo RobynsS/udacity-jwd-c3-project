@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -45,7 +42,12 @@ public class UserController {
 
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId){
-        throw new UnsupportedOperationException();
+        Optional<Pet> pet = petService.getPet(petId);
+        if (pet.isPresent()){
+            return convertCustomerToCustomerDTO(userService.getOwnerByPet(pet.get()));
+        } else{
+            throw new NoSuchElementException();
+        }
     }
 
     @PostMapping("/employee")

@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.pet.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,10 @@ public class UserService {
 
     public Optional<Employee> getEmployee(Long id){
         return  employeeRepository.findById(id);
+    }
+
+    public Customer getOwnerByPet(Pet pet){
+        return pet.getCustomer();
     }
 }
 
