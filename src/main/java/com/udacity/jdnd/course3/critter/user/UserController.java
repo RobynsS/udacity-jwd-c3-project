@@ -65,7 +65,13 @@ public class UserController {
 
     @PutMapping("/employee/{employeeId}")
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        Optional<Employee> employee = userService.getEmployee(employeeId);
+        if (employee.isPresent()){
+            employee.get().setDaysAvailable(daysAvailable);
+            userService.saveEmployee(employee.get());
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     @GetMapping("/employee/availability")
