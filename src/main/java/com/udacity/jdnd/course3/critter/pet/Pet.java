@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Table(name = "pet")
 public class Pet {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)

@@ -13,7 +13,7 @@ import java.util.Set;
 @Table(name = "schedule")
 public class Schedule {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToMany
